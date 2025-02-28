@@ -28,6 +28,12 @@ public class CustomerController {
         return ResponseEntity.ok(customerDtos);
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getCustomer(@PathVariable Long id){
+        CustomerDto customerDto = customerService.getCustomer(id);
+        return ResponseEntity.ok(customerDto);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<?> saveCustomer(@Valid @RequestBody CustomerRegistrationRequest customerRegistrationRequest){
         if(customerService.hasCustomerWithMobile(customerRegistrationRequest.getMobile()) || customerService.hasCustomerWithEmail(customerRegistrationRequest.getEmail())) {
