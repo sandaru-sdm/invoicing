@@ -1,5 +1,6 @@
 package com.sdm.invoicing.controller;
 
+import com.sdm.invoicing.dto.CustomerDto;
 import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.dto.PaymentTypeSaveRequest;
 import com.sdm.invoicing.service.PaymentTypeService;
@@ -26,6 +27,12 @@ public class PaymentTypeController {
     public ResponseEntity<List<PaymentTypeDto>> getAllPaymentTypes(){
         List<PaymentTypeDto> paymentTypeDtos = paymentTypeService.getAllPaymentTypes();
         return ResponseEntity.ok(paymentTypeDtos);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getPaymentType(@PathVariable Long id){
+        PaymentTypeDto paymentTypeDto = paymentTypeService.getPaymentType(id);
+        return ResponseEntity.ok(paymentTypeDto);
     }
 
     @PostMapping("/save")

@@ -1,7 +1,9 @@
 package com.sdm.invoicing.service;
 
+import com.sdm.invoicing.dto.CustomerDto;
 import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.dto.PaymentTypeSaveRequest;
+import com.sdm.invoicing.entity.Customer;
 import com.sdm.invoicing.entity.PaymentType;
 import com.sdm.invoicing.repository.PaymentTypeRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -47,6 +49,12 @@ public class PaymentTypeService {
         PaymentType paymentType = paymentTypeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No Payment type found with the ID :: " + id));
         paymentType.setName(paymentTypeSaveRequest.getName());
         paymentType = paymentTypeRepository.save(paymentType);
+        return paymentType.getDto();
+    }
+
+    public PaymentTypeDto getPaymentType(Long id) {
+        PaymentType paymentType = paymentTypeRepository.findById(id).isPresent() ? paymentTypeRepository.findById(id).get() : null;
+        assert paymentType != null;
         return paymentType.getDto();
     }
 }
