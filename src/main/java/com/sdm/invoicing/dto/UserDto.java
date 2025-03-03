@@ -6,6 +6,7 @@ public class UserDto {
     private Long id;
     private String email;
     private String name;
+    private String password;
     private UserRole role;
     private String activationCode;
 
@@ -47,5 +48,13 @@ public class UserDto {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

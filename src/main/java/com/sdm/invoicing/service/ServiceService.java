@@ -51,4 +51,9 @@ public class ServiceService {
         return service.getDto();
     }
 
+    public ServiceDto getService(Long id) {
+        com.sdm.invoicing.entity.Service service = serviceRepository.findById(id).isPresent() ? serviceRepository.findById(id).get() : null;
+        assert service != null;
+        return service.getDto();
+    }
 }

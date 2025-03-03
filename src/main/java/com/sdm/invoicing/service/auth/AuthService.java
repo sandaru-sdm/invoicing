@@ -8,8 +8,12 @@ import com.sdm.invoicing.repository.UserRepository;
 import com.sdm.invoicing.service.ActivationService;
 import com.sdm.invoicing.service.EmailService;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -72,4 +76,36 @@ public class AuthService {
             System.out.println("Admin Account is exist." + adminAccount);
         }
     }
+
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(User::getDto).collect(Collectors.toList());
+    }
+
+    public UserDto getUser(Long id) {
+        User user = userRepository.findById(id).isPresent() ? userRepository.findById(id).get() : null;
+        assert user != null;
+        return user.getDto();
+    }
+
+    public UserDto updateUser(Long id, UserRegisterRequest userRegisterRequest) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No User found with the ID :: " + id));
+
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setName(userRegisterRequest.getName());
+
+        if (userRegisterRequest.getPassword() != null && !userRegisterRequest.getPassword().isEmpty()) {
+            user.setPassword(new BCryptPasswordEncoder().encode(userRegisterRequest.getPassword()));
+        }
+        if (userRegisterRequest.getUserRole() != null) {
+            user.setRole(userRegisterRequest.getUserRole());
+        }
+
+        user.setActivated(true);
+        user = userRepository.save(user);
+
+        return user.getDto();
+    }
+
 }

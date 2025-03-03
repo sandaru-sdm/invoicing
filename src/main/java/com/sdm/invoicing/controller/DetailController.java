@@ -2,7 +2,6 @@ package com.sdm.invoicing.controller;
 
 import com.sdm.invoicing.dto.DetailDto;
 import com.sdm.invoicing.dto.DetailSaveRequest;
-import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.service.DetailService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,7 @@
 package com.sdm.invoicing.entity;
 
+import com.sdm.invoicing.dto.ServiceDto;
+import com.sdm.invoicing.dto.UserDto;
 import com.sdm.invoicing.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,16 @@ public class User implements UserDetails, Principal {
     private boolean isActivated = false;
 
     private String activationCode;
+
+    public UserDto getDto() {
+        UserDto dto = new UserDto();
+        dto.setId(id);
+        dto.setName(name);
+        dto.setEmail(email);
+        dto.setActivationCode(activationCode);
+        dto.setRole(role);
+        return dto;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -27,6 +27,12 @@ public class ServiceController {
         return ResponseEntity.ok(serviceDtos);
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getService(@PathVariable Long id){
+        ServiceDto serviceDto = service.getService(id);
+        return ResponseEntity.ok(serviceDto);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<?> saveService(@Valid @RequestBody ServiceSaveRequest serviceSaveRequest){
         if(service.hasServiceWithName(serviceSaveRequest.getName())) {

@@ -1,9 +1,7 @@
 package com.sdm.invoicing.service;
 
-import com.sdm.invoicing.dto.CustomerDto;
 import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.dto.PaymentTypeSaveRequest;
-import com.sdm.invoicing.entity.Customer;
 import com.sdm.invoicing.entity.PaymentType;
 import com.sdm.invoicing.repository.PaymentTypeRepository;
 import jakarta.persistence.EntityNotFoundException;

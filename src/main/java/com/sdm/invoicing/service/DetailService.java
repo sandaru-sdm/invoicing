@@ -2,9 +2,7 @@ package com.sdm.invoicing.service;
 
 import com.sdm.invoicing.dto.DetailDto;
 import com.sdm.invoicing.dto.DetailSaveRequest;
-import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.entity.Detail;
-import com.sdm.invoicing.entity.PaymentType;
 import com.sdm.invoicing.repository.DetailRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

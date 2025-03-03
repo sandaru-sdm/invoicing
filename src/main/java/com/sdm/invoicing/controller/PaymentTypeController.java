@@ -1,6 +1,5 @@
 package com.sdm.invoicing.controller;
 
-import com.sdm.invoicing.dto.CustomerDto;
 import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.dto.PaymentTypeSaveRequest;
 import com.sdm.invoicing.service.PaymentTypeService;
