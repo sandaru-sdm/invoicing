@@ -2,6 +2,7 @@ package com.sdm.invoicing.controller;
 
 import com.sdm.invoicing.dto.DetailDto;
 import com.sdm.invoicing.dto.DetailSaveRequest;
+import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.service.DetailService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,12 @@ public class DetailController {
     public ResponseEntity<List<DetailDto>> getAllDetails(){
         List<DetailDto> detailDtos = detailService.getAllDetails();
         return ResponseEntity.ok(detailDtos);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getDetail(@PathVariable Long id){
+        DetailDto detailDto = detailService.getDetail(id);
+        return ResponseEntity.ok(detailDto);
     }
 
     @PostMapping("/save")

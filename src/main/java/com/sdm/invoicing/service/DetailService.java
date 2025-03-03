@@ -2,7 +2,9 @@ package com.sdm.invoicing.service;
 
 import com.sdm.invoicing.dto.DetailDto;
 import com.sdm.invoicing.dto.DetailSaveRequest;
+import com.sdm.invoicing.dto.PaymentTypeDto;
 import com.sdm.invoicing.entity.Detail;
+import com.sdm.invoicing.entity.PaymentType;
 import com.sdm.invoicing.repository.DetailRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,12 @@ public class DetailService {
         Detail detail = detailRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No Detail found with the ID :: " + id));
         detail.setName(detailSaveRequest.getName());
         detail = detailRepository.save(detail);
+        return detail.getDto();
+    }
+
+    public DetailDto getDetail(Long id) {
+        Detail detail = detailRepository.findById(id).isPresent() ? detailRepository.findById(id).get() : null;
+        assert detail != null;
         return detail.getDto();
     }
 }
