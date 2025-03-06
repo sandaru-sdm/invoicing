@@ -28,6 +28,11 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<InvoiceItem> invoiceItems;
 
+    @PrePersist
+    public void generateInvoiceId() {
+        this.invoiceId = "INV-" + System.currentTimeMillis();
+    }
+
     public InvoiceDto getDto() {
         InvoiceDto dto = new InvoiceDto();
         dto.setId(id);

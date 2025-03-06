@@ -2,6 +2,7 @@ package com.sdm.invoicing.entity;
 
 import com.sdm.invoicing.dto.InvoiceItemDto;
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -26,10 +27,8 @@ public class InvoiceItem {
     @Column(nullable = false)
     private int qty;
 
-    @Column(nullable = false)
     private BigDecimal height;
 
-    @Column(nullable = false)
     private BigDecimal width;
 
     @Column(nullable = false)
@@ -37,14 +36,13 @@ public class InvoiceItem {
 
     public InvoiceItemDto getDto() {
         InvoiceItemDto dto = new InvoiceItemDto();
-        dto.setId(id);
-        dto.setInvoiceId(invoice != null ? invoice.getId() : null);
-        dto.setServiceId(service != null ? service.getId() : null);
-        dto.setDetailId(detail != null ? detail.getId() : null);
-        dto.setQty(qty);
-        dto.setHeight(height);
-        dto.setWidth(width);
-        dto.setRate(rate);
+        dto.setId(this.id);
+        dto.setServiceId(this.service != null ? this.service.getId() : null);
+        dto.setDetailId(this.detail != null ? this.detail.getId() : null);
+        dto.setQty(this.qty);
+        dto.setHeight(this.height);
+        dto.setWidth(this.width);
+        dto.setRate(this.rate);
         return dto;
     }
 

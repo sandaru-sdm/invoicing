@@ -4,13 +4,39 @@ import java.math.BigDecimal;
 
 public class InvoiceItemDto {
     private Long id;
-    private Long invoiceId;
     private Long serviceId;
     private Long detailId;
-    private int qty;
+    private Integer qty;
     private BigDecimal height;
     private BigDecimal width;
     private BigDecimal rate;
+    private String serviceName;
+    private String detailName;
+    private BigDecimal totalAmount;
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public String getDetailName() {
+        return detailName;
+    }
+
+    public void setDetailName(String detailName) {
+        this.detailName = detailName;
+    }
 
     public Long getId() {
         return id;
@@ -18,14 +44,6 @@ public class InvoiceItemDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
     }
 
     public Long getServiceId() {
@@ -44,11 +62,11 @@ public class InvoiceItemDto {
         this.detailId = detailId;
     }
 
-    public int getQty() {
+    public Integer getQty() {
         return qty;
     }
 
-    public void setQty(int qty) {
+    public void setQty(Integer qty) {
         this.qty = qty;
     }
 
@@ -74,5 +92,18 @@ public class InvoiceItemDto {
 
     public void setRate(BigDecimal rate) {
         this.rate = rate;
+    }
+
+    @Override
+    public String toString() {
+        return "InvoiceItemDto{" +
+                "id=" + id +
+                ", serviceId=" + serviceId +
+                ", detailId=" + detailId +
+                ", qty=" + qty +
+                ", height=" + height +
+                ", width=" + width +
+                ", rate=" + rate +
+                '}';
     }
 }
