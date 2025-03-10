@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -128,15 +129,7 @@ public class InvoiceService {
 
             InvoicePayment invoicePayment = invoicePaymentRepository.findByInvoiceId(invoice.getId());
             if (invoicePayment != null) {
-                InvoicePaymentDto paymentDto = new InvoicePaymentDto();
-                paymentDto.setId(invoicePayment.getId());
-                paymentDto.setInvoiceId(invoice.getId());
-                paymentDto.setPayment(invoicePayment.getPayment());
-                paymentDto.setBalance(invoicePayment.getBalance());
-
-                PaymentType paymentType = invoicePayment.getPaymentType();
-                paymentDto.setPaymentTypeId(paymentType.getId());
-                paymentDto.setPaymentTypeName(paymentType.getName());
+                InvoicePaymentDto paymentDto = getInvoicePaymentDto(invoice, invoicePayment);
 
                 invoiceDto.setInvoicePayment(paymentDto);
             }
@@ -146,4 +139,83 @@ public class InvoiceService {
 
         return invoiceDtos;
     }
+
+    private static InvoicePaymentDto getInvoicePaymentDto(Invoice invoice, InvoicePayment invoicePayment) {
+        InvoicePaymentDto paymentDto = new InvoicePaymentDto();
+        paymentDto.setId(invoicePayment.getId());
+        paymentDto.setInvoiceId(invoice.getId());
+        paymentDto.setPayment(invoicePayment.getPayment());
+        paymentDto.setBalance(invoicePayment.getBalance());
+
+        PaymentType paymentType = invoicePayment.getPaymentType();
+        paymentDto.setPaymentTypeId(paymentType.getId());
+        paymentDto.setPaymentTypeName(paymentType.getName());
+        return paymentDto;
+    }
+
+    public List<InvoiceItemDto> getInvoiceItemsByInvoiceId(Long id) {
+        List<InvoiceItem> items = invoiceItemRepository.findByInvoice_Id(id);
+        List<InvoiceItemDto> invoiceItemDtos = new ArrayList<>();
+
+        for (InvoiceItem item : items) {
+            InvoiceItemDto dto = new InvoiceItemDto();
+            dto.setId(item.getId());
+
+            if (item.getService() != null) {
+                dto.setServiceId(item.getService().getId());
+                dto.setServiceName(item.getService().getName());
+            }
+
+            if (item.getDetail() != null) {
+                dto.setDetailId(item.getDetail().getId());
+                dto.setDetailName(item.getDetail().getName());
+            }
+
+            dto.setQty(item.getQty());
+            dto.setHeight(item.getHeight());
+            dto.setWidth(item.getWidth());
+            dto.setRate(item.getRate());
+
+            BigDecimal totalAmount = getAmount(item);
+
+            dto.setTotalAmount(totalAmount.setScale(2, RoundingMode.HALF_UP));
+
+            invoiceItemDtos.add(dto);
+        }
+
+        return invoiceItemDtos;
+    }
+
+    private static BigDecimal getAmount(InvoiceItem item) {
+        BigDecimal qty = item.getQty() != 0 ? BigDecimal.valueOf(item.getQty()) : BigDecimal.ZERO;
+        BigDecimal height = item.getHeight() != null ? item.getHeight() : BigDecimal.ZERO;
+        BigDecimal width = item.getWidth() != null ? item.getWidth() : BigDecimal.ZERO;
+        BigDecimal rate = item.getRate() != null ? item.getRate() : BigDecimal.ZERO;
+
+        BigDecimal totalAmount;
+        if (width.compareTo(BigDecimal.ZERO) == 0 && height.compareTo(BigDecimal.ZERO) == 0) {
+            totalAmount = rate.multiply(qty);
+        } else if (width.compareTo(BigDecimal.ZERO) > 0 && height.compareTo(BigDecimal.ZERO) > 0) {
+            totalAmount = height.multiply(width).multiply(rate).multiply(qty);
+        } else {
+            totalAmount = BigDecimal.ZERO;
+        }
+        return totalAmount;
+    }
+
+
+    public InvoiceDto getInvoiceById(Long id) {
+        Invoice invoice = invoiceRepository.findById(id).isPresent() ? invoiceRepository.findById(id).get() : null;
+        assert invoice != null;
+        return invoice.getDto();
+    }
+
+    public InvoicePaymentDto getInvoicePaymentByInvoiceId(Long id) {
+        InvoicePayment payment = invoicePaymentRepository.findByInvoiceId(id);
+        if (payment == null) {
+            throw new RuntimeException("Invoice payment not found for invoice ID: " + id);
+        }
+        return payment.getDto();
+    }
+
 }

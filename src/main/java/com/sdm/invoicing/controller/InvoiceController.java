@@ -1,6 +1,8 @@
 package com.sdm.invoicing.controller;
 
 import com.sdm.invoicing.dto.InvoiceDto;
+import com.sdm.invoicing.dto.InvoiceItemDto;
+import com.sdm.invoicing.dto.InvoicePaymentDto;
 import com.sdm.invoicing.entity.Invoice;
 import com.sdm.invoicing.service.InvoiceService;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +30,23 @@ public class InvoiceController {
     public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceDto invoiceDto) {
         Invoice invoice = invoiceService.saveInvoice(invoiceDto);
         return ResponseEntity.ok(invoice);
+    }
+
+    @GetMapping("items/{id}")
+    public ResponseEntity<List<InvoiceItemDto>> getInvoiceItemsByInvoiceId(@PathVariable Long id) {
+        List<InvoiceItemDto> invoiceItems = invoiceService.getInvoiceItemsByInvoiceId(id);
+        return ResponseEntity.ok(invoiceItems);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<InvoiceDto> getInvoiceById(@PathVariable Long id) {
+        InvoiceDto invoice = invoiceService.getInvoiceById(id);
+        return ResponseEntity.ok(invoice);
+    }
+
+    @GetMapping("payment/{id}")
+    public ResponseEntity<InvoicePaymentDto> getInvoicePaymentByInvoiceId(@PathVariable Long id) {
+        InvoicePaymentDto paymentDto = invoiceService.getInvoicePaymentByInvoiceId(id);
+        return ResponseEntity.ok(paymentDto);
     }
 }
