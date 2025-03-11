@@ -1,7 +1,7 @@
 package com.sdm.invoicing.service;
 
 import com.sdm.invoicing.entity.User;
-import jakarta.mail.MessagingException;
+import jakarta.mail.*;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import jakarta.activation.DataSource;
+import jakarta.mail.util.ByteArrayDataSource;
+
+import java.io.IOException;
+import java.util.Properties;
 
 @Service
 public class EmailService {
@@ -95,5 +101,31 @@ public class EmailService {
             e.printStackTrace();
             logger.error("Unexpected error while sending email to {}", toEmail, e);
         }
+    }
+
+    public void sendInvoiceEmail(String to, String customerName, String invoiceHtml) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(to);
+        helper.setSubject("Invoice from Simple Idea - " + customerName);
+        helper.setText(invoiceHtml, true);
+
+        mailSender.send(message);
+    }
+
+    public void sendEmailWithAttachment(String email, String customerName, MultipartFile invoiceFile) throws MessagingException, IOException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(email);
+        helper.setSubject("Invoice from Simple Idea - " + customerName);
+        helper.setText("Hello " + customerName + ",\n\nPlease find your invoice attached.");
+
+        DataSource dataSource = new ByteArrayDataSource(invoiceFile.getBytes(), "application/pdf");
+
+        helper.addAttachment(invoiceFile.getOriginalFilename(), dataSource);
+
+        mailSender.send(message);
     }
 }

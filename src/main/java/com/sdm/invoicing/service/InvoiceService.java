@@ -1,5 +1,6 @@
 package com.sdm.invoicing.service;
 
+import com.sdm.invoicing.dto.CustomerDto;
 import com.sdm.invoicing.dto.InvoiceDto;
 import com.sdm.invoicing.dto.InvoiceItemDto;
 import com.sdm.invoicing.dto.InvoicePaymentDto;
@@ -217,5 +218,4 @@ public class InvoiceService {
         }
         return payment.getDto();
     }
-
 }

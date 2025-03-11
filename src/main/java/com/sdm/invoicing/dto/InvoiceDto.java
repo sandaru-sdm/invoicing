@@ -17,7 +17,6 @@ public class InvoiceDto {
     private BigDecimal totalAmount;
     private InvoicePaymentDto invoicePayment;
 
-
     public Long getId() {
         return id;
     }
