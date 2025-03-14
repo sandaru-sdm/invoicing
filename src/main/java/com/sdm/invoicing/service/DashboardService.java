@@ -2,8 +2,10 @@ package com.sdm.invoicing.service;
 
 import com.sdm.invoicing.entity.Invoice;
 import com.sdm.invoicing.entity.InvoiceItem;
+import com.sdm.invoicing.repository.CustomerRepository;
 import com.sdm.invoicing.repository.InvoiceItemRepository;
 import com.sdm.invoicing.repository.InvoiceRepository;
+import com.sdm.invoicing.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,10 +20,14 @@ public class DashboardService {
 
     private final InvoiceRepository invoiceRepository;
     private final InvoiceItemRepository invoiceItemRepository;
+    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
-    public DashboardService(InvoiceRepository invoiceRepository, InvoiceItemRepository invoiceItemRepository) {
+    public DashboardService(InvoiceRepository invoiceRepository, InvoiceItemRepository invoiceItemRepository, CustomerRepository customerRepository, UserRepository userRepository) {
         this.invoiceRepository = invoiceRepository;
         this.invoiceItemRepository = invoiceItemRepository;
+        this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
     }
 
     public Integer getTotalInvoices() {
@@ -95,5 +101,13 @@ public class DashboardService {
         }
 
         return total;
+    }
+
+    public Integer getCustomerCount() {
+        return Math.toIntExact(customerRepository.count());
+    }
+
+    public Integer getUsersCount() {
+        return Math.toIntExact(userRepository.count());
     }
 }

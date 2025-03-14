@@ -42,4 +42,14 @@ public class DashboardController {
     private BigDecimal getThisMonthIncome() {
         return dashboardService.getThisMonthIncome();
     }
+
+    @GetMapping("/customers-count")
+    private Integer getTotalCustomers() {
+        return dashboardService.getCustomerCount();
+    }
+
+    @GetMapping("/users-count")
+    private Integer getTotalUsers() {
+        return dashboardService.getUsersCount();
+    }
 }

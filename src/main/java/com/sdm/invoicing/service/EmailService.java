@@ -14,7 +14,6 @@ import jakarta.activation.DataSource;
 import jakarta.mail.util.ByteArrayDataSource;
 
 import java.io.IOException;
-import java.util.Properties;
 
 @Service
 public class EmailService {
@@ -31,14 +30,6 @@ public class EmailService {
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-
-//    public void sendActivationEmail(String toEmail, String activationCode) {
-//        String activationLink = BASE_URL + "auth/activate?code=" + activationCode;
-//        String subject = "Account Activation";
-//        String text = "Please activate your account using the following link: " + activationLink;
-//
-//        sendEmail(toEmail, subject, text);
-//    }
 
     public void sendActivationEmail(String toEmail, String activationCode) {
         String activationLink = BASE_URL + "auth/activate?code=" + activationCode;
